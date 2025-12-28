@@ -227,6 +227,13 @@ All Docker Compose files and Dockerfiles MUST follow these security requirements
    - Only expose necessary ports
    - Use health checks for service dependencies
 
+9. **Security Scanning (MANDATORY):**
+   - Scan images before deployment using Trivy or Docker Scout
+   - Integrate scanning into CI/CD pipeline
+   - Set up weekly automated scans
+   - Fix HIGH and CRITICAL vulnerabilities immediately
+   - Document MEDIUM and LOW vulnerabilities for review
+
 **Security Checklist for Every Docker Project:**
 - [ ] All containers run as non-root
 - [ ] `security_opt: - no-new-privileges:true` on all services
@@ -237,6 +244,100 @@ All Docker Compose files and Dockerfiles MUST follow these security requirements
 - [ ] Minimal base images used
 - [ ] Images pinned to specific tags
 - [ ] Health checks configured
+- [ ] Security scanning integrated (Trivy/Docker Scout)
+- [ ] CI/CD pipeline includes vulnerability scanning
+
+**Security Scanning Tools:**
+
+1. **Trivy (Recommended):**
+   ```bash
+   # Install
+   brew install trivy  # macOS
+   # or download from: https://github.com/aquasecurity/trivy/releases
+   
+   # Scan image
+   trivy image <image-name>
+   
+   # Scan with severity filter
+   trivy image --severity HIGH,CRITICAL <image-name>
+   
+   # Scan docker-compose files
+   trivy config docker-compose.yml
+   ```
+
+2. **Docker Scout:**
+   ```bash
+   # Enable (Docker Desktop 4.25+)
+   docker scout quickview
+   
+   # Scan image
+   docker scout cves <image-name>
+   
+   # Compare images
+   docker scout compare <old-image> <new-image>
+   ```
+
+3. **CI/CD Integration:**
+   - Add Trivy to GitHub Actions (see example workflow)
+   - Set up weekly scheduled scans
+   - Block deployments on CRITICAL vulnerabilities
+   - Upload scan results to GitHub Security tab
+
+**Security Scanning Workflow:**
+```yaml
+# .github/workflows/security-scan.yml
+name: Docker Security Scan
+on:
+  push:
+    paths: ['docker-compose*.yml', '**/Dockerfile*']
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'image'
+          scan-ref: 'your-image:latest'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+```
+
+**Regular Security Maintenance:**
+- Weekly: Automated vulnerability scans
+- Monthly: Review and update base images
+- Quarterly: Rotate secrets and credentials
+- Annually: Full security audit and penetration testing
+
+**Security Scanning Checklist:**
+- [ ] Trivy or Docker Scout installed
+- [ ] Security scanning script created (`scripts/security-scan.sh`)
+- [ ] CI/CD pipeline includes security scanning
+- [ ] Weekly automated scans configured
+- [ ] Pre-deployment security checks in place
+- [ ] Vulnerability tracking system (GitHub Issues/Projects)
+- [ ] Remediation process documented
+- [ ] Team trained on security scanning workflow
+
+**Quick Security Commands:**
+```bash
+# Install Trivy
+brew install trivy  # macOS
+
+# Scan all images
+trivy image $(docker-compose config --images)
+
+# Scan with severity filter
+trivy image --severity HIGH,CRITICAL <image>
+
+# Scan docker-compose config
+trivy config docker-compose.yml
+
+# Generate HTML report
+trivy image --format template --template "@contrib/html.tpl" --output report.html <image>
+```
 
 ### 5. Code Review
 **What:** Automated code review with adversarial approach
@@ -322,6 +423,52 @@ Standardized protocol for AI tools. More consistent, better maintained than plug
 **What:** Secure filesystem access
 **Use Case:** When native file tools aren't enough
 **Priority:** Low (native tools usually sufficient)
+
+---
+
+## Security Tools
+
+### Trivy (CRITICAL for Docker Projects)
+**What:** Comprehensive security scanner for containers, images, and configs
+**Use Case:** Scan Docker images for CVEs, check docker-compose security
+**Install:** 
+```bash
+brew install trivy  # macOS
+# Or download from: https://github.com/aquasecurity/trivy/releases
+```
+**Link:** https://aquasecurity.github.io/trivy/
+
+**Usage:**
+```bash
+# Scan image
+trivy image <image-name>
+
+# Scan with severity filter
+trivy image --severity HIGH,CRITICAL <image>
+
+# Scan docker-compose
+trivy config docker-compose.yml
+
+# Generate report
+trivy image --format template --template "@contrib/html.tpl" --output report.html <image>
+```
+
+**Priority:** CRITICAL (all Docker projects must use this)
+
+### Docker Scout (Alternative)
+**What:** Built-in Docker security scanning (Docker Desktop 4.25+)
+**Use Case:** Quick vulnerability checks, image comparison
+**Install:** Included with Docker Desktop
+**Link:** https://docs.docker.com/scout/
+
+**Usage:**
+```bash
+docker scout quickview
+docker scout cves <image>
+docker scout compare <old> <new>
+```
+
+**Priority:** High (if using Docker Desktop)
 
 ---
 
@@ -889,6 +1036,13 @@ When I start a project: BMAD init → KingMode → Essential plugins → MCP gat
 ---
 
 ## Version History
+
+- **2025-01-27 v4** - Enhanced Security Section
+  - Added Trivy and Docker Scout as critical security tools
+  - Comprehensive security scanning guidance
+  - CI/CD security scanning workflow templates
+  - Security maintenance schedules and checklists
+  - Incident response procedures
 
 - **2025-01-27 v3** - Added Docker Security Policies
   - Mandatory security requirements for all Docker projects
