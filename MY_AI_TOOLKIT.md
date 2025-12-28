@@ -179,6 +179,65 @@ npx bmad-method@alpha install
 **Install:** Via Claude Plugin Manager → Search "security-guidance"
 **Priority:** HIGH (public health, sensitive data)
 
+**Docker Security Policies (MANDATORY):**
+All Docker Compose files and Dockerfiles MUST follow these security requirements:
+
+1. **Non-Root Users:**
+   - All containers MUST run as non-root users
+   - Add `USER` directive in Dockerfiles
+   - Add `user:` specification in docker-compose.yml
+   - Exception: Apache/nginx may need root for port 80, but must drop privileges
+
+2. **Security Options:**
+   - ALL services MUST include: `security_opt: - no-new-privileges:true`
+   - Prevents privilege escalation attacks
+
+3. **Secrets Management:**
+   - NEVER hardcode secrets in docker-compose.yml or Dockerfiles
+   - Use environment variables: `${SECRET_NAME}`
+   - Use Docker secrets for production
+   - Add `.env` files to `.gitignore`
+
+4. **Docker Socket Mounts:**
+   - NEVER mount `/var/run/docker.sock` without read-only flag
+   - If write access required (e.g., Watchtower), add security warnings
+   - Consider Docker-in-Docker (DinD) or rootless Docker for better isolation
+
+5. **Resource Limits:**
+   - Add resource limits to prevent DoS:
+     ```yaml
+     deploy:
+       resources:
+         limits:
+           cpus: '2'
+           memory: 1G
+     ```
+
+6. **File Permissions:**
+   - Use `755` or `750`, NEVER `777` (world-write access)
+   - Set proper ownership in Dockerfiles
+
+7. **Base Images:**
+   - Prefer minimal images (alpine, distroless)
+   - Pin to specific tags, avoid `:latest`
+   - Regularly scan for CVEs (Trivy, Docker Scout)
+
+8. **Network Security:**
+   - Use bridge networks, avoid host network mode
+   - Only expose necessary ports
+   - Use health checks for service dependencies
+
+**Security Checklist for Every Docker Project:**
+- [ ] All containers run as non-root
+- [ ] `security_opt: - no-new-privileges:true` on all services
+- [ ] No hardcoded secrets
+- [ ] Docker socket mounts are read-only (if needed)
+- [ ] Resource limits defined
+- [ ] File permissions are secure (755/750, not 777)
+- [ ] Minimal base images used
+- [ ] Images pinned to specific tags
+- [ ] Health checks configured
+
 ### 5. Code Review
 **What:** Automated code review with adversarial approach
 **Use Case:** Pre-commit PR reviews, quality gates
@@ -830,6 +889,12 @@ When I start a project: BMAD init → KingMode → Essential plugins → MCP gat
 ---
 
 ## Version History
+
+- **2025-01-27 v3** - Added Docker Security Policies
+  - Mandatory security requirements for all Docker projects
+  - Security checklist for Docker Compose and Dockerfiles
+  - Best practices for secrets, users, permissions, and resource limits
+  - Based on comprehensive security audit across 8 repositories
 
 - **2025-12-28 v2** - Added security-guidance, php-lsp, typescript-lsp
   - Documented MY TECH STACK in detail (Laravel+Vue OR Next.js)
