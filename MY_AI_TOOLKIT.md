@@ -106,6 +106,220 @@ When suggesting solutions:
 
 ---
 
+## Claude Skills (Self-Improving Memory)
+
+### What Are Claude Skills?
+
+Claude Skills are a feature in Claude Code that creates **self-improving memory**. They analyze sessions, extract corrections/patterns, and automatically update skill files - creating a system that learns from you over time.
+
+**The Problem They Solve:**
+LLMs don't learn between sessions. You correct the same mistakes repeatedly. Every conversation starts from zero.
+
+**The Solution:**
+Skills analyze sessions, extract learnings, update themselves, and commit to Git. You correct once, it remembers forever.
+
+### How It Works
+
+```
+Session → Corrections/Paterns → Reflect Skill → Update Skills → Git Commit
+                     ↑                                            ↓
+                     └────────────── Learned Forever ←───────────┘
+```
+
+### Three Ways to Use
+
+**1. Manual Reflection** (Recommended to Start)
+```bash
+# After a session with corrections:
+/reflect
+
+# Specify which skill to update:
+/reflect ui-conventions
+```
+
+**2. Automatic Reflection** (For Advanced Users)
+Set up hooks to trigger reflection at session end:
+```json
+// .claude/hooks.json
+{
+  "hooks": {
+    "stop-hook": "bash scripts/reflect-auto.sh"
+  }
+}
+```
+
+**3. Toggle On/Off**
+```bash
+/reflect on    # Enable auto-reflection
+/reflect off   # Disable auto-reflection
+/reflect status  # Check if enabled
+```
+
+### What Gets Learned
+
+| Signal Type | Example | Confidence | Stored As |
+|-------------|---------|------------|-----------|
+| **Correction** | "Never use alert()" | HIGH | Rule: Never do X |
+| **Approval** | "That Quasar pattern worked well" | MEDIUM | Pattern: Use this approach |
+| **Observation** | "Seems to prefer composition API" | LOW | Note: Review later |
+
+### Project Skills Structure
+
+```
+.claude/
+├── skills/
+│   ├── reflect.md           # The meta-skill that learns
+│   ├── ui-conventions.md    # UI/UX patterns learned
+│   ├── code-style.md        # Coding style preferences
+│   ├── api-design.md        # API design patterns
+│   └── security-practices.md # Security learnings
+└── hooks.json               # Auto-reflection triggers
+```
+
+### Example Learning Session
+
+```
+You: Create a submit button
+Claude: [Creates button with inline alert()]
+
+You: Don't use alert(). Use Quasar's $q.notify instead.
+Claude: [Fixes to use $q.notify]
+
+---
+
+Later: /reflect
+
+Signals Detected:
+✓ HIGH: Never use alert() in this project
+✓ MEDIUM: Use Quasar's $q.notify for notifications
+
+Proposed Changes:
+→ Update ui-conventions.md
+→ Add alert() prohibition rule
+→ Add Quasar Notify pattern
+
+Commit: feat: learn to use Quasar Notify instead of alert()
+
+[Y] Accept | [n] Reject | [e] Edit
+```
+
+### Setting Up in Your Project
+
+**Step 1: Copy Skills to Your Project**
+```bash
+# Copy the skills directory from this toolkit
+cp -r .claude/skills /path/to/your-project/.claude/
+```
+
+**Step 2: Customize Skills for Your Project**
+```bash
+# Edit skills to match your preferences
+code .claude/skills/ui-conventions.md
+code .claude/skills/code-style.md
+```
+
+**Step 3: Start Using Reflect**
+```bash
+# In Claude Code, after a session:
+/reflect
+```
+
+### Skill Files Explained
+
+**reflect.md** - The learning engine. Analyzes sessions and updates other skills.
+
+**ui-conventions.md** - UI/UX patterns:
+- Component preferences (Quasar vs custom)
+- Notification patterns (never alert(), always $q.notify)
+- Layout conventions
+- Styling guidelines
+
+**code-style.md** - Coding conventions:
+- TypeScript/JavaScript patterns
+- PHP/Laravel conventions
+- Naming conventions
+- Async/await preferences
+
+**api-design.md** - API patterns:
+- RESTful conventions
+- Response formats
+- Error handling
+- Pagination patterns
+
+### Best Practices
+
+**1. Be Explicit in Corrections**
+- ❌ "Not that way"
+- ✅ "Never use alert(), always use $q.notify"
+
+**2. Use Consistent Language**
+- "Always do X" → HIGH confidence rule
+- "I prefer Y" → MEDIUM confidence pattern
+- User seems to like Z → LOW confidence observation
+
+**3. Review Before Accepting**
+- Always check the proposed changes
+- You can edit with natural language
+- Git commits create history you can revert
+
+**4. Start Manual, Then Auto**
+- Use `/reflect` manually first
+- Build confidence in the system
+- Enable auto-reflection when comfortable
+
+**5. Version Your Skills**
+- Keep skills in Git
+- See how your system learns over time
+- Rollback if needed: `git revert HEAD`
+
+### What Makes This Different
+
+| Traditional LLM Memory | Claude Skills |
+|------------------------|---------------|
+| Black box embeddings | Plain markdown files |
+| Can't inspect what's stored | Human-readable skills |
+| No version control | Full Git history |
+| Complex infrastructure | Simple files |
+| Vague associations | Explicit rules/patterns |
+
+### Integration with This Toolkit
+
+**BMAD Method:**
+- Skills learn your epic/story preferences
+- Remembers your sprint planning patterns
+- Adapts to your architecture decisions
+
+**Security Guidance:**
+- Learns from your security reviews
+- Remembers Docker security preferences
+- Adapts to your vulnerability handling
+
+**Stack Choices:**
+- Remembers when you choose Laravel+Vue vs Next.js
+- Learns your testing tool preferences
+- Tracks your deployment patterns
+
+### Quick Reference for AI Assistants
+
+```
+When working with me, check:
+1. .claude/skills/reflect.md - How I learn
+2. .claude/skills/ui-conventions.md - UI patterns
+3. .claude/skills/code-style.md - Code style
+4. .claude/skills/api-design.md - API patterns
+
+If I correct you, that's a learning signal.
+Note the correction for future sessions.
+```
+
+### Resources
+
+- **Video:** [Self-Improving Skills in Claude Code](https://youtu.be/-4nUCaMNBR8) by Developers Digest
+- **Example Skills:** See `.claude/skills/` directory in this toolkit
+- **Hooks Example:** See `.claude/hooks.json.example`
+
+---
+
 ## Core Development Methodology
 
 ### BMAD Method ⭐ (ESSENTIAL)
@@ -1026,16 +1240,26 @@ My Essential Toolkit:
 4. [Language]-LSP - PHP for Laravel, TS for Next.js/Vue
 5. Feature Dev Plugin - Architecture help
 6. Ralph Wiggum - Morale 🧋
+7. Self-Improving Skills - Memory and pattern learning enabled
 
 My Stack: Laravel+Vue OR Next.js
 My Philosophy: Essential, maintained, standardized, stack-agnostic
 
-When I start a project: BMAD init → KingMode → Essential plugins → MCP gateway
+When I start a project: BMAD init → KingMode → Essential plugins → MCP gateway → Enable memory
+
+Self-Improvement: Learn from my code patterns, preferences, and feedback. Remember project context across sessions.
 ```
 
 ---
 
 ## Version History
+
+- **2025-01-28 v5** - Added Self-Improving Skills Section
+  - Comprehensive guide to memory and context persistence
+  - Pattern recognition and workflow refinement
+  - Best practices for enabling self-improvement
+  - Integration with existing toolkit components
+  - Memory and context file management
 
 - **2025-01-27 v4** - Enhanced Security Section
   - Added Trivy and Docker Scout as critical security tools

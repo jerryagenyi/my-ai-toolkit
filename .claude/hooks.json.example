@@ -1,0 +1,20 @@
+{
+  "$schema": "https://claude.ai/manifest.json",
+  "description": "Example hooks configuration for auto-reflection",
+  "hooks": {
+    "user-prompt-submit-hook": {
+      "command": "bash",
+      "args": [
+        "-c",
+        "if [ -f 'scripts/reflect-check.sh' ]; then bash scripts/reflect-check.sh; fi"
+      ]
+    },
+    "stop-hook": {
+      "command": "bash",
+      "args": [
+        "-c",
+        "if [ -f 'scripts/reflect-auto.sh' ]; then bash scripts/reflect-auto.sh; fi"
+      ]
+    }
+  }
+}

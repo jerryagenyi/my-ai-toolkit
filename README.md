@@ -57,6 +57,12 @@
 ### MCP Servers
 - **Docker MCP Gateway** - 100+ tools via single connection (GitHub, NPM, Brave, Context7, Playwright, etc.)
 
+### Self-Improving Skills
+- **Memory & Context Persistence** - Learns from past interactions and remembers preferences
+- **Pattern Recognition** - Identifies and adapts to your coding patterns
+- **Workflow Refinement** - Automatically improves suggestions based on feedback
+- **Preference Learning** - Remembers your stack choices and tool preferences
+
 ### Tech Stack Coverage
 - Laravel + Vue/Quasar
 - Next.js
