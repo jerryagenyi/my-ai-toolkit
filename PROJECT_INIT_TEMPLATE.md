@@ -40,6 +40,9 @@ cat > PROJECT_INIT.md << 'EOF'
 - Phase: [Planning/Dev/Deployed]
 - Last Updated: $(date)
 EOF
+
+# 6. Optional: add JustBash when building AI agent features that need safe script execution
+# npm install just-bash   # or bash-tool for AI SDK
 ```
 
 ---

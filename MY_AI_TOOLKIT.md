@@ -104,6 +104,22 @@ When suggesting solutions:
 
 ---
 
+## Index of Integrated Tools
+
+| Tool | Summary | How we use it in this toolkit | GitHub / link |
+|------|---------|-------------------------------|---------------|
+| **BMAD Method** | Enterprise agentic development framework (product brief → PRD → architecture → epics & stories → implementation). | Core development methodology; we run `npx bmad-method@alpha install` for new projects and use its workflows for planning, code review, and testing. | https://github.com/aicodeking/bmad-method |
+| **KINGMODE.md** | Instructions for AI assistants on communication style, updates, and code preferences. | Project init: we copy from yt-tutorial as a project-level AI guidance file. | https://github.com/aicodeking/yt-tutorial |
+| **Claude Skills (Reflect)** | Self-improving memory: analyses sessions, extracts corrections/patterns, updates skill files. | We ship `.claude/skills/` (reflect, ui-conventions, code-style, api-design, security-practices) and use `/reflect` so the AI learns our preferences over time. | Part of Claude Code; skills live in this repo’s `.claude/skills/`. |
+| **Ralph Wiggum** | Milk tea coupon easter egg plugin. | Optional fun/morale plugin in Claude Code. | https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum |
+| **Security Guidance** | Security vulnerability detection and best practices (incl. Docker). | Mandatory for projects with user/sensitive data; we enforce Docker security policies and checklists from this toolkit. | Claude Code plugin (search "security-guidance"). |
+| **Trivy** | Security scanner for containers, images, and configs (CVEs, misconfigurations). | Required for Docker projects: image and docker-compose scanning, CI/CD integration, severity filters. | https://github.com/aquasecurity/trivy |
+| **Docker Scout** | Built-in Docker security scanning (Docker Desktop 4.25+). | Alternative to Trivy for quick local scans and image comparison when using Docker Desktop. | https://docs.docker.com/scout/ |
+| **Repomix** | Packages a codebase into a single LLM-friendly file. | We use it to share project context with AI (e.g. `repomix . --output codebase.txt`) before reviews or deep analysis. | https://github.com/yamadashy/repomix |
+| **JustBash** | TypeScript implementation of Bash with an in-memory (or overlay) filesystem; safe, sandboxed bash for AI agents. | Optional: when building features that need script-like execution for AI agents without giving real shell/containers; zero infra, sandboxed by default. | https://github.com/vercel-labs/just-bash |
+| **Docker MCP Gateway** | Single MCP server exposing 100+ tools (GitHub, NPM, Brave Search, Playwright, Context7, etc.). | Primary MCP: we prefer it over many separate plugins for GitHub, search, browser automation, and docs. | Via MCP server marketplace (search "docker-mcp-gateway"). |
+| **Feature Dev / Frontend Design / LSPs** | Architecture, UI/UX, and language server plugins for Claude Code. | We install by stack: feature-dev + frontend-design + php-lsp or typescript-lsp as essential; code-review, context7, playwright as optional. | Claude Code Plugin Manager. |
+
 ---
 
 ## Claude Skills (Self-Improving Memory)
@@ -712,6 +728,38 @@ repomix . --ignore "node_modules,dist,*.log" --output clean.txt
 - Code review portability
 - Sharing project with external AI
 
+### JustBash
+**What:** TypeScript implementation of Bash with an in-memory (or overlay) virtual filesystem. Gives AI agents safe, sandboxed bash-like execution with zero containers or servers.
+
+**Video assessment:** [JustBash – Bash for AI agents (BetterStack)](https://youtu.be/EoyLzyJUcfI) (~6 min) explains the idea well: simulated bash (grep, sed, awk, jq, cat, ls, etc.) in TypeScript, in-memory FS, no host access. **Verdict: strong addition** when you need AI agents to run script-like tasks without real shell access—fits the toolkit’s security-first, minimal-infra approach.
+
+**Use Case:** AI agent features that need “run commands” behaviour (file ops, text processing, data wrangling) without giving real shell or standing up containers.
+
+**Install:** `npm install just-bash` (or `bash-tool` for AI SDK integration).
+
+**Link:** https://github.com/vercel-labs/just-bash
+
+**Usage:**
+```bash
+# As library (Node/TypeScript)
+npm install just-bash
+```
+
+```ts
+import { Bash } from "just-bash";
+const env = new Bash();
+await env.exec('echo "Hello" > greeting.txt');
+const result = await env.exec("cat greeting.txt");
+// result.stdout, result.exitCode; filesystem is in-memory by default
+```
+
+**When to Use:**
+- Building agent features that need safe “run bash-like commands” (e.g. process JSON, filter text, list files).
+- Avoiding containers/servers while still giving agents a familiar shell model.
+- Optional: use OverlayFs for read-from-disk / write-in-memory, or ReadWriteFs in a dedicated sandbox dir.
+
+**Priority:** Optional (add when you have a concrete agent-use case).
+
 ---
 
 ## MY TECH STACK
@@ -1203,6 +1251,9 @@ cp /path/to/KINGMODE.md .
 
 # 5. Create initial repomix (optional)
 repomix . --output initial-state.txt
+
+# 6. Optional: add JustBash when building AI agent features that need safe script execution
+# npm install just-bash   # or bash-tool for AI SDK
 ```
 
 ---
@@ -1253,6 +1304,11 @@ Self-Improvement: Learn from my code patterns, preferences, and feedback. Rememb
 ---
 
 ## Version History
+
+- **2025-02-07 v6** - Tools index and JustBash
+  - Added "Index of Integrated Tools" table (name, summary, how we use it, GitHub/link) for all integrated tools
+  - Added JustBash to Utility Tools with video assessment ([BetterStack video](https://youtu.be/EoyLzyJUcfI)), usage, and optional priority
+  - JustBash: TypeScript Bash with in-memory FS for safe AI agent script execution without containers
 
 - **2025-01-28 v5** - Added Self-Improving Skills Section
   - Comprehensive guide to memory and context persistence

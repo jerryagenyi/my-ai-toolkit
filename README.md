@@ -63,6 +63,10 @@
 - **Workflow Refinement** - Automatically improves suggestions based on feedback
 - **Preference Learning** - Remembers your stack choices and tool preferences
 
+### Utility Tools
+- **Repomix** – Package codebase into one LLM-friendly file
+- **JustBash** – Safe, in-memory Bash for AI agents (optional; use when building agent script execution)
+
 ### Tech Stack Coverage
 - Laravel + Vue/Quasar
 - Next.js
@@ -265,7 +269,7 @@ The goal isn't to have every tool - it's to have the **right tools**.
 - Essential plugins: 3-7
 - MCP servers: 1-3 (Docker Gateway covers 90%)
 - LSP plugins: 1-2 (your languages only)
-- Utility tools: 1-3 (Repomix, etc.)
+- Utility tools: 1-3 (Repomix, JustBash, etc.)
 
 **Total tool count: Aim for < 20 items maximum.**
 

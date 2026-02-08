@@ -45,7 +45,7 @@ cd my-ai-toolkit
 **Keep these sections:**
 - Core Development Methodology (BMAD)
 - MCP Servers section
-- Utility Tools (Repomix, etc.)
+- Utility Tools (Repomix, JustBash, etc.)
 
 ### Step 3: Test Your Toolkit
 ```bash
