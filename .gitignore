@@ -1,0 +1,4 @@
+# Spreadsheet exports (local reference, not tracked)
+*.csv
+*.xlsx
+~$*
