@@ -1,9 +1,11 @@
 # Local LLM — AMD RDNA2 Playbook
 
 **GPU:** AMD Radeon RX 6800 XT — 16 GB VRAM (RDNA2)  
+**CPU:** AMD Ryzen 7 5800X — 8 cores / 16 threads (Zen 3)  
 **RAM:** 64 GB  
-**Runtime:** llama.cpp (Vulkan backend) — no ROCm, no Docker needed  
-**Updated:** 2026-06-05
+**Runtime:** llama.cpp v9310 (Vulkan backend, WinGet) — no ROCm, no Docker needed  
+**Updated:** 2026-06-05  
+**Status:** Tested ✓ — 14B loads in ~13s, GPU confirmed via Vulkan
 
 ---
 
@@ -123,10 +125,13 @@ In Hermes agents: set `OPENAI_BASE_URL=http://100.102.126.128:8033/v1`
 | Factor | Video (GTX 1060) | Your PC (RX 6800 XT) |
 |--------|-----------------|----------------------|
 | VRAM | 6 GB | 16 GB |
+| CPU | i3 8100 (4c/4t) | Ryzen 7 5800X (8c/16t, Zen 3) |
 | RAM | 24 GB | 64 GB |
+| PCIe | Gen 3 | Gen 4 (5800X platform) |
 | `--n-cpu-moe` needed | 35-36 | 10-15 (more experts on GPU) |
 | `--mlock` risk | Would evict under pressure | No risk — 44 GB free after model |
-| Speed estimate | 17 tok/s | 35-50 tok/s |
+| Expert RAM fetch speed | Limited by old DDR4 + i3 | Fast — Zen 3 memory controller |
+| Speed estimate | 17 tok/s | 40-60 tok/s |
 | Max context (q8_0) | 64K | 131K+ |
 | Max context (turbo quant) | 256K | 256K+ |
 
