@@ -2,6 +2,19 @@
 
 ---
 
+## How this compares to Ollama
+
+| What you want | Ollama | llama.cpp (this setup) |
+|---------------|--------|------------------------|
+| Chat in terminal | `ollama run qwen3:14b` | `chat.bat` |
+| Start API server (background) | `ollama serve` | `start-server-background.bat` |
+| Start API server (visible) | — | `start-server.bat` |
+| Stop server | `ollama stop` | `stop-server.bat` |
+| Check if running | `ollama ps` | `status-server.bat` |
+| Download a model | `ollama pull qwen3:14b` | `download-model.bat` |
+
+---
+
 ## Step 1: Start the server
 
 Double-click (or run from terminal):
@@ -17,6 +30,20 @@ server is listening on http://0.0.0.0:8033
 ```
 
 Loading takes about **13 seconds** for the 14B model. Leave the window open while using the server.
+
+---
+
+## Step 1b: Chat in terminal instead (no server needed)
+
+If you just want to talk to the model without running an API server — like `ollama run` — double-click:
+
+```
+C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\chat.bat
+```
+
+The model loads (~13 seconds), then you get a `>` prompt. Type your message, press Enter. Type `/bye` or press Ctrl+C to exit.
+
+**This is self-contained** — no server, no port, no other apps needed. The downside is nothing else can connect to it while it's running.
 
 ---
 
