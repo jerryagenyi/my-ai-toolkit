@@ -12,8 +12,8 @@ set LLAMA_BIN=C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.lla
 
 set MODEL_PATH=C:\Users\Username\.cache\huggingface\hub\models--Qwen--Qwen3-14B-GGUF\snapshots\530227a7d994db8eca5ab5ced2fb692b614357fd\Qwen3-14B-Q4_K_M.gguf
 set NGL=99
-set CTX=32768
-set EXTRA_ARGS=--cache-type-k q8_0 --cache-type-v q8_0
+set CTX=65536
+set EXTRA_ARGS=--cache-type-k q4_0 --cache-type-v q4_0
 
 tasklist /FI "IMAGENAME eq llama-server.exe" 2>NUL | find /I "llama-server.exe" >NUL
 if %ERRORLEVEL% EQU 0 (

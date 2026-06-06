@@ -55,7 +55,7 @@ Run AI models fully offline on your own machine. No cloud, no API keys, no query
 
 | Model | File suffix | Location | Size | VRAM usage |
 |-------|-------------|----------|------|------------|
-| Qwen3-14B Q4_K_M | `_Qwen3-14B-Q4_K_M` | HuggingFace cache | 9 GB | Full GPU |
+| Qwen3-14B Q4_K_M | `_Qwen3-14B-Q4_K_M` | HuggingFace cache | 9 GB | Full GPU, 64K ctx |
 | Qwen3.6-35B-A3B Q4_K_M | `_Qwen3.6-35B-A3B-Q4_K_M` | `C:\Users\Username\models\` | 22 GB | ~5 GB GPU + RAM |
 
 ---
