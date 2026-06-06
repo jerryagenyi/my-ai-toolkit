@@ -38,8 +38,11 @@ Model files location:
 |------|---------|
 | `quickstart.md` | **Start here** — run a model, start/stop server, switch models |
 | `workflow.md` | Use the API — curl, Python, Hermes agents |
-| `start-server.bat` | **Run this** to start the model server |
-| `download-model.bat` | Download the MoE model when you're ready |
+| `start-server.bat` | Start server **with a visible terminal window** |
+| `start-server-background.bat` | Start server **silently** in background (like Ollama) |
+| `stop-server.bat` | Stop the server and free VRAM |
+| `status-server.bat` | Check if server is running and responding |
+| `download-model.bat` | Download the MoE model (Qwen3.6-35B-A3B, ~20 GB) |
 | `add-firewall-rule.bat` | One-time setup: open port 8033 on Tailscale (triggers UAC prompt) |
 
 ---
