@@ -16,6 +16,20 @@ set MODEL_PATH=C:\Users\Username\.cache\huggingface\hub\models--Qwen--Qwen3-14B-
 set NGL=99
 set EXTRA_ARGS=
 
+:: Check if server is already using VRAM — can't load model twice on 16 GB
+tasklist /FI "IMAGENAME eq llama-server.exe" 2>NUL | find /I "llama-server.exe" >NUL
+if %ERRORLEVEL% EQU 0 (
+    echo [ERROR] llama-server is already running and using VRAM.
+    echo.
+    echo You cannot run chat and server at the same time on 16 GB VRAM.
+    echo.
+    echo Options:
+    echo   A) Stop the server first:  stop-server.bat  then re-run this file
+    echo   B) Chat via browser instead: open-webui.bat  (server stays running)
+    pause
+    exit /B 1
+)
+
 echo Loading Qwen3-14B Q4_K_M (~13 seconds)...
 echo Type your message and press Enter. /bye or Ctrl+C to exit.
 echo.
