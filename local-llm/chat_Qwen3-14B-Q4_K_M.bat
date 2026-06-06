@@ -13,7 +13,7 @@
 set LLAMA_CLI=C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.llamacpp_Microsoft.Winget.Source_8wekyb3d8bbwe\llama-cli.exe
 set MODEL_PATH=C:\Users\Username\.cache\huggingface\hub\models--Qwen--Qwen3-14B-GGUF\snapshots\530227a7d994db8eca5ab5ced2fb692b614357fd\Qwen3-14B-Q4_K_M.gguf
 set NGL=99
-set CTX=65536
+set CTX=131072
 set EXTRA_ARGS=
 
 :: ── Check if server is running ────────────────────────────────────────────────
