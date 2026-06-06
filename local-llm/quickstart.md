@@ -7,7 +7,7 @@
 Double-click (or run from terminal):
 
 ```
-C:\Users\Username\Documents\github\my-ai-toolkit\scripts\start-llama-server.bat
+C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\start-server.bat
 ```
 
 A terminal window opens. Watch for this line — it means the model is loaded and ready:
@@ -85,16 +85,10 @@ This downloads **~20 GB** to `C:\Users\Username\models\`. Make sure you have spa
 
 ## Firewall: Allow access from other Tailnet devices
 
-Run this **once** in an **elevated** (admin) PowerShell:
+Run this **once** — it triggers a UAC (admin) prompt, click Yes:
 
 ```
-Right-click PowerShell in Start menu → "Run as administrator"
-```
-
-Then paste:
-
-```powershell
-New-NetFirewallRule -DisplayName "llama-server Tailscale" -Direction Inbound -Protocol TCP -LocalPort 8033 -Action Allow -InterfaceAlias "Tailscale"
+C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\add-firewall-rule.bat
 ```
 
 After this, any device on your Tailscale network can reach the API at:

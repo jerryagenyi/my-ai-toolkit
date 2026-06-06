@@ -38,7 +38,9 @@ Model files location:
 |------|---------|
 | `quickstart.md` | **Start here** — run a model, start/stop server, switch models |
 | `workflow.md` | Use the API — curl, Python, Hermes agents |
+| `start-server.bat` | **Run this** to start the model server |
 | `download-model.bat` | Download the MoE model when you're ready |
+| `add-firewall-rule.bat` | One-time setup: open port 8033 on Tailscale (triggers UAC prompt) |
 
 ---
 
@@ -49,10 +51,3 @@ C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.llamacpp_Microsof
 ```
 
 Version: 9310 (Vulkan-enabled). Update with: `winget upgrade ggml.llamacpp`
-
----
-
-## Start Script
-
-`scripts/start-llama-server.bat` — double-click or run from terminal.  
-Edit the top of the file to switch between models.
