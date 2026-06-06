@@ -1,135 +1,136 @@
-# Local LLM — Quick Start
+# Local LLM — Operational Guide
+
+Everything you need to know about running models, what conflicts, and what to do when.
 
 ---
 
-## How this compares to Ollama
+## The one rule you need to know
 
-| What you want | Ollama | llama.cpp (this setup) |
-|---------------|--------|------------------------|
-| Chat in terminal | `ollama run qwen3:14b` | `chat.bat` |
-| Start API server (background) | `ollama serve` | `start-server-background.bat` |
-| Start API server (visible) | — | `start-server.bat` |
-| Stop server | `ollama stop` | `stop-server.bat` |
-| Check if running | `ollama ps` | `status-server.bat` |
-| Download a model | `ollama pull qwen3:14b` | `download-model.bat` |
+**The VRAM rule:** Your GPU has 16 GB. Both `llama-cli.exe` (terminal chat) and `llama-server.exe` (API server) each load a full copy of the model into VRAM. You cannot run both at the same time.
 
----
-
-## Step 1: Start the server
-
-Double-click (or run from terminal):
-
-```
-C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\start-server.bat
-```
-
-A terminal window opens. Watch for this line — it means the model is loaded and ready:
-
-```
-server is listening on http://0.0.0.0:8033
-```
-
-Loading takes about **13 seconds** for the 14B model. Leave the window open while using the server.
+| What you want | Result |
+|---------------|--------|
+| Server running + open browser chat | Works — they share the same process |
+| Server running + start terminal chat | VRAM overflow, model fails to load |
+| Terminal chat running + start server | Same — VRAM overflow |
+| Two models loaded at once | Not possible on 16 GB |
 
 ---
 
-## Step 1b: Chat in terminal instead (no server needed)
-
-If you just want to talk to the model without running an API server — like `ollama run` — double-click:
+## Decision flow: "I want to chat"
 
 ```
-C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\chat.bat
-```
+Want a chat UI in the browser?
+  → Double-click open-webui.bat
+     • If server is already running: browser opens immediately
+     • If not: choose which model, it starts in the background, browser opens when ready
 
-The model loads (~13 seconds), then you get a `>` prompt. Type your message, press Enter. Type `/bye` or press Ctrl+C to exit.
-
-**This is self-contained** — no server, no port, no other apps needed. The downside is nothing else can connect to it while it's running.
-
----
-
-## Step 2: Test it's working
-
-In a separate terminal (PowerShell or Git Bash):
-
-```powershell
-curl http://localhost:8033/health
-```
-
-Expected response: `{"status":"ok"}`
-
-Quick chat test:
-
-```powershell
-curl http://localhost:8033/v1/chat/completions `
-  -H "Content-Type: application/json" `
-  -d '{"model":"local","messages":[{"role":"user","content":"What is 2+2?"}],"max_tokens":50}'
+Want to chat in the terminal?
+  → Double-click chat_<Model>.bat
+     • If server is NOT running: model loads, terminal chat starts
+     • If server IS running: you'll be asked:
+         (B) Open browser chat instead  ← recommended, server keeps running
+         (K) Kill server, then start terminal chat
+         (C) Cancel
 ```
 
 ---
 
-## Step 3: Stop the server
+## What can run at the same time
 
-Press **Ctrl+C** in the server terminal window, or just close the window.
-
-The model is unloaded from VRAM immediately on close.
-
----
-
-## Step 4: Switch from 14B to the MoE model
-
-Open `scripts/start-llama-server.bat` in a text editor.
-
-Find these two lines and swap which one is commented out:
-
-```bat
-:: Option A: Qwen3-14B (already downloaded, simpler, full GPU)
-set MODEL_PATH=C:\Users\Username\.cache\...Qwen3-14B-Q4_K_M.gguf
-set N_CPU_MOE=0
-set CTX=32768
-
-:: Option B: Qwen3-30B-A3B MoE (download first)
-:: set MODEL_PATH=C:\Users\Username\models\Qwen3-30B-A3B-Q4_K_M.gguf
-:: set N_CPU_MOE=12
-:: set CTX=131072
-```
-
-To use Option B: remove the `:: ` from those three lines, and add `:: ` to the Option A lines.  
-Then run the script again. The MoE model takes about 30-45 seconds to load.
+| Combination | OK? | Notes |
+|-------------|-----|-------|
+| Server + browser chat | Yes | Browser chat is just the server's built-in UI |
+| Server + Python/curl API calls | Yes | That's what the server is for |
+| Server + another machine on Tailscale | Yes | Port 8033 is open on Tailscale interface |
+| Server + terminal chat (`llama-cli`) | **No** | VRAM conflict |
+| Two terminal chats | **No** | VRAM conflict |
+| Two servers | **No** | Port conflict + VRAM conflict |
 
 ---
 
-## Step 5: Download the MoE model
+## What each file does
 
-Run this when you want to upgrade to the 30B MoE:
+### Start from scratch (nothing running)
 
-```
-C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\download-model.bat
-```
+| File | What it does | Load time |
+|------|-------------|-----------|
+| `open-webui.bat` | Asks which model, starts server, opens browser | auto |
+| `chat_Qwen3-14B-Q4_K_M.bat` | Loads 14B model, opens terminal chat | ~13s |
+| `chat_Qwen3.6-35B-A3B-Q4_K_M.bat` | Loads 35B MoE model, opens terminal chat | ~45s |
+| `start-server_Qwen3-14B-Q4_K_M.bat` | Starts 14B API server (visible window) | ~13s |
+| `start-server_Qwen3.6-35B-A3B-Q4_K_M.bat` | Starts 35B MoE API server (visible window) | ~45s |
+| `start-server-background_Qwen3-14B-Q4_K_M.bat` | Starts 14B server silently (no window) | ~13s |
+| `start-server-background_Qwen3.6-35B-A3B-Q4_K_M.bat` | Starts 35B MoE server silently (no window) | ~45s |
 
-This downloads **~20 GB** to `C:\Users\Username\models\`. Make sure you have space and a good connection. You can close and re-run if it gets interrupted — it resumes where it left off.
+### While server is running
+
+| File | What it does |
+|------|-------------|
+| `open-webui.bat` | Opens `http://localhost:8033` in browser |
+| `chat_*.bat` | Asks: browser chat / kill server / cancel |
+| `status-server.bat` | Shows which model is loaded, health check |
+| `stop-server.bat` | Kills server, frees all VRAM |
+
+### One-time setup
+
+| File | What it does |
+|------|-------------|
+| `add-firewall-rule.bat` | Opens port 8033 on Tailscale (triggers UAC — run once) |
+| `download-model_Qwen3.6-35B-A3B-Q4_K_M.bat` | Downloads the 35B MoE model (~22 GB) |
 
 ---
 
-## Firewall: Allow access from other Tailnet devices
+## Common tasks
 
-Run this **once** — it triggers a UAC (admin) prompt, click Yes:
+**Chat with the browser UI:**  
+Double-click `open-webui.bat` — it handles everything.
 
-```
-C:\Users\Username\Documents\github\my-ai-toolkit\local-llm\add-firewall-rule.bat
-```
+**Use the API from another device on Tailscale:**  
+Server must be running. Endpoint: `http://100.102.126.128:8033/v1`
 
-After this, any device on your Tailscale network can reach the API at:
-`http://100.102.126.128:8033/v1`
+**Check which model is loaded:**  
+Run `status-server.bat`. It shows the model path and health status.
+
+**Switch from 14B to the MoE model:**  
+Stop the current server (`stop-server.bat`), then start `start-server_Qwen3.6-35B-A3B-Q4_K_M.bat`.  
+The MoE model takes ~45 seconds to load.
+
+**Free up VRAM completely:**  
+Run `stop-server.bat` (if server is running) or close the terminal chat window.  
+After that, all VRAM is returned to the GPU.
 
 ---
 
-## Common issues
+## If something goes wrong
 
-**Server starts but GPU isn't being used:**  
-Look for this in the startup output: `Vulkan0 : AMD Radeon RX 6800 XT`. If it's missing, the Vulkan backend didn't load. Make sure `ggml-vulkan.dll` is in the same folder as `llama-server.exe`.
+**Model loads but GPU isn't being used:**  
+Look for `Vulkan0 : AMD Radeon RX 6800 XT` in the server startup output. If missing, the Vulkan backend didn't load — check that `ggml-vulkan.dll` is in the same folder as `llama-server.exe`.
 
-**"Out of memory" at startup:**  
-For the MoE model, increase `N_CPU_MOE` from 12 to 15 or 18 in the bat file and try again.
+**"Out of memory" when starting the MoE model:**  
+Open `start-server_Qwen3.6-35B-A3B-Q4_K_M.bat` and increase `--n-cpu-moe` from 12 to 15 or 18.  
+This offloads more expert layers to RAM instead of VRAM.
 
-**Model loads but responses are very slow:**  
-Check that `-ngl 99` or `-ngl 999` is present in the startup command. Without it, inference runs on CPU only.
+**Responses are very slow:**  
+Check that `-ngl 999` (MoE) or `-ngl 99` (14B) is in the startup command. Without it, inference runs entirely on CPU.
+
+**Chat window flashes and disappears:**  
+The server is probably running and VRAM is full. Use `open-webui.bat` to chat in the browser instead, or run `stop-server.bat` first.
+
+**Server won't start — port already in use:**  
+Another server is running. Run `stop-server.bat` then try again.
+
+---
+
+## API access (for scripts and agents)
+
+| What | Value |
+|------|-------|
+| Base URL (local) | `http://localhost:8033/v1` |
+| Base URL (Tailscale) | `http://100.102.126.128:8033/v1` |
+| Web UI | `http://localhost:8033` |
+| Health check | `http://localhost:8033/health` → `{"status":"ok"}` |
+| API key | Not required (leave blank or use any string) |
+| Model name | Any string — `local`, `qwen3`, doesn't matter |
+
+See `workflow.md` for curl, Python, and agent integration examples.
