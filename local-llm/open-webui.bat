@@ -1,15 +1,60 @@
 @echo off
-:: MODEL-AGNOSTIC
-:: Opens the llama-server built-in web chat UI in your default browser.
-:: The server must already be running (use start-server_<model>.bat first).
+:: MODEL-AGNOSTIC — Browser chat UI
+:: - If server is running: opens it in your browser immediately
+:: - If no server is running: asks which model to start, starts it, then opens browser
 
+set LLAMA_BIN=C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.llamacpp_Microsoft.Winget.Source_8wekyb3d8bbwe\llama-server.exe
+
+:: ── Check if server is already running ────────────────────────────────────────
 tasklist /FI "IMAGENAME eq llama-server.exe" 2>NUL | find /I "llama-server.exe" >NUL
-if %ERRORLEVEL% NEQ 0 (
-    echo [ERROR] No server is running.
-    echo Start a server first: double-click start-server_^<model^>.bat
-    pause
-    exit /B 1
+if %ERRORLEVEL% EQU 0 (
+    echo [RUNNING] Server detected on port 8033.
+    echo Opening browser chat...
+    start "" "http://localhost:8033"
+    exit /B 0
 )
 
-echo Opening web chat UI at http://localhost:8033 ...
+:: ── No server running — ask which model to start ──────────────────────────────
+echo [STOPPED] No server is running.
+echo.
+echo Which model do you want to start?
+echo.
+echo   (1) Qwen3-14B Q4_K_M      — loads in ~13s, full GPU, best for daily use
+echo   (2) Qwen3.6-35B-A3B Q4_K_M — loads in ~45s, MoE, best for complex tasks
+echo   (C) Cancel
+echo.
+set /p CHOICE="Your choice (1/2/C): "
+
+if /i "%CHOICE%"=="C" exit /B 0
+if /i "%CHOICE%"=="1" goto START_14B
+if /i "%CHOICE%"=="2" goto START_35B
+echo Invalid choice. Exiting.
+pause
+exit /B 1
+
+:START_14B
+set MODEL_PATH=C:\Users\Username\.cache\huggingface\hub\models--Qwen--Qwen3-14B-GGUF\snapshots\530227a7d994db8eca5ab5ced2fb692b614357fd\Qwen3-14B-Q4_K_M.gguf
+set SERVER_ARGS=--host 0.0.0.0 --port 8033 -ngl 99 --ctx-size 32768 --cache-type-k q8_0 --cache-type-v q8_0
+set LOAD_TIME=15
+goto START_SERVER
+
+:START_35B
+set MODEL_PATH=C:\Users\Username\models\Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf
+set SERVER_ARGS=--host 0.0.0.0 --port 8033 -ngl 999 --n-cpu-moe 12 --no-mmap --mlock --ctx-size 131072 --cache-type-k q8_0 --cache-type-v q8_0
+set LOAD_TIME=50
+goto START_SERVER
+
+:START_SERVER
+echo.
+echo Starting server in background (this takes ~%LOAD_TIME% seconds)...
+powershell -Command "Start-Process -FilePath '%LLAMA_BIN%' -ArgumentList '--model ""%MODEL_PATH%"" %SERVER_ARGS%' -WindowStyle Hidden"
+
+:: ── Wait for server to be ready ───────────────────────────────────────────────
+echo Waiting for model to load...
+:WAIT_LOOP
+timeout /t 3 /nobreak >NUL
+curl -s http://localhost:8033/health 2>NUL | find "ok" >NUL
+if %ERRORLEVEL% NEQ 0 goto WAIT_LOOP
+
+echo Server ready. Opening browser...
 start "" "http://localhost:8033"
