@@ -17,7 +17,7 @@ set LLAMA_BIN=C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.lla
 set MODEL_PATH=C:\Users\Username\models\Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf
 set NGL=999
 set CTX=131072
-set EXTRA_ARGS=--n-cpu-moe 12 --no-mmap --mlock --cache-type-k q8_0 --cache-type-v q8_0
+set EXTRA_ARGS=--n-cpu-moe 12 --no-mmap --cache-type-k q8_0 --cache-type-v q8_0
 
 echo Starting server: Qwen3.6-35B-A3B Q4_K_M (MoE)
 echo Port: 8033  ^|  Local: http://localhost:8033/v1

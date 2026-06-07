@@ -13,7 +13,7 @@ set LLAMA_BIN=C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.lla
 set MODEL_PATH=C:\Users\Username\models\Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf
 set NGL=999
 set CTX=131072
-set EXTRA_ARGS=--n-cpu-moe 12 --no-mmap --mlock --cache-type-k q8_0 --cache-type-v q8_0
+set EXTRA_ARGS=--n-cpu-moe 12 --no-mmap --cache-type-k q8_0 --cache-type-v q8_0
 
 tasklist /FI "IMAGENAME eq llama-server.exe" 2>NUL | find /I "llama-server.exe" >NUL
 if %ERRORLEVEL% EQU 0 (
@@ -22,13 +22,28 @@ if %ERRORLEVEL% EQU 0 (
     exit /B 1
 )
 
-echo Starting Qwen3.6-35B-A3B Q4_K_M (MoE) silently on port 8033...
-powershell -Command "Start-Process -FilePath '%LLAMA_BIN%' -ArgumentList '--model ""%MODEL_PATH%"" --host 0.0.0.0 --port 8033 -ngl %NGL% --ctx-size %CTX% %EXTRA_ARGS%' -WindowStyle Hidden"
+echo Starting Qwen3.6-35B-A3B Q4_K_M (MoE) on port 8033 (minimized)...
+start "llama-server" /MIN "%LLAMA_BIN%" --model "%MODEL_PATH%" --host 0.0.0.0 --port 8033 -ngl %NGL% --ctx-size %CTX% %EXTRA_ARGS%
+
+:: ── Verify the process actually launched ──────────────────────────────────────
+echo Waiting for process to appear...
+timeout /t 5 /nobreak >NUL
+tasklist /FI "IMAGENAME eq llama-server.exe" 2>NUL | find /I "llama-server.exe" >NUL
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo [ERROR] llama-server did not start.
+    echo   Run start-server_Qwen3.6-35B-A3B-Q4_K_M.bat to see the error in the console.
+    echo   Or lower CTX in this file and retry.
+    pause
+    exit /B 1
+)
 
 echo.
-echo Server started. Takes ~30-45s to load before accepting requests.
+echo [OK] Server running (minimized in taskbar). Takes ~30-45s to load model.
+echo.
 echo   Local:     http://localhost:8033/v1
 echo   Tailscale: http://100.102.126.128:8033/v1
+echo   Web chat:  http://localhost:8033
 echo.
-echo Run status-server.bat to confirm it's ready.
-echo Run stop-server.bat to shut it down.
+echo Restore the minimized window to watch startup. Close it to stop the server.
+echo Run stop-server.bat to shut it down cleanly.
