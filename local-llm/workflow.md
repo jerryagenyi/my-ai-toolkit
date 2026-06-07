@@ -87,6 +87,69 @@ The Tailscale address `100.102.126.128` means any Hermes agent on your Tailnet (
 
 ---
 
+## For AI Agents — Read This First
+
+This section is for Hermes agents and other automated systems routing tasks to this endpoint.
+
+### Endpoint
+
+```
+http://192.168.1.244:8033/v1        # from LAN or WSL
+http://100.102.126.128:8033/v1      # from Tailscale (Kali, VPS agents, mobile)
+```
+
+No API key required. Pass any string (e.g. `"local"`).
+
+**Check availability before use:**
+```bash
+curl -sf http://192.168.1.244:8033/v1/models | grep -q "id" && echo "UP" || echo "DOWN"
+```
+
+### Hard limits — do not exceed these
+
+| Limit | Value | What happens if exceeded |
+|-------|-------|--------------------------|
+| Context window | 32,768 tokens | Server silently truncates from the start of the message array |
+| Safe input budget | 28,000 tokens | Leaves 4,768 tokens for output |
+| Recommended output reserve | 4,096 tokens | Anything beyond may be cut mid-response |
+| Parallel slots | 1 | Second request queues, does not run in parallel |
+
+**The server does not warn on overflow.** It silently drops the oldest messages to fit. If a response seems to lack context from earlier in the conversation, the input exceeded the window and early messages were dropped.
+
+### What to route here
+
+- Code generation: single-file, focused scope, clear spec
+- Boilerplate and scaffolding (CRUD, API handlers, config files)
+- Regex, data transforms, simple algorithms
+- Explaining a specific function or code block
+- Renaming, refactoring within a single file
+- Writing tests for a known function
+- Quick lookups (syntax, library usage, shell commands)
+- Drafts that will be reviewed/refined by Claude Pro
+
+### What to route to Claude Pro or GLM-5 instead
+
+- Multi-file architecture decisions
+- Long multi-turn debugging sessions (>10 turns with full context each time)
+- Tasks requiring reasoning about entire codebases
+- Anything requiring >28K tokens of input
+- Agentic tasks with tool use chains (this server has no tool use)
+- Tasks where quality matters more than cost (final implementation, not drafts)
+- GLM-5: Chinese-language tasks, anything in the GLM ecosystem
+
+### Context is stateless — the client owns history
+
+Each API call is independent. The server holds no session state between requests. The "conversation" exists only in the `messages` array the agent sends each time. Hermes must manage its own rolling window and trim history before calling this endpoint.
+
+**Recommended Hermes config for this endpoint:**
+```
+max_input_tokens: 28000
+max_output_tokens: 4096
+trim_strategy: keep_system + keep_last_N_turns + summarise_older
+```
+
+---
+
 ## Streaming responses
 
 Add `"stream": true` to get token-by-token output (faster perceived response):

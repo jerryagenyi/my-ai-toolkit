@@ -145,6 +145,57 @@ If the server **OOMs at startup**: raise `--n-cpu-moe` by 2-3 until it loads
 
 ---
 
+## VRAM Budget (Qwen3-14B Q4_K_M at 32K context)
+
+| Item | VRAM |
+|------|------|
+| Model weights | ~8.5 GB |
+| KV cache at 32K context (f16) | ~5.0 GB |
+| MTP draft head cache | ~0.5 GB |
+| **Total under load** | **~14 GB of 16 GB** |
+| Headroom | ~2 GB |
+
+Fully GPU-bound — no CPU offload, no mmap spill. Stable at current config.
+
+**If you increase context beyond 32K:** KV cache grows linearly. At 48K it needs ~7.5 GB, pushing total to ~16.5 GB — exceeds VRAM, causes CPU spill or OOM. Safe ceiling without KV quantization is ~40K tokens.
+
+**To push past 40K:** use KV quantization (`--cache-type-k q8_0 --cache-type-v q8_0`) to halve the KV cache cost — allows ~64K context within 16 GB.
+
+---
+
+## Context Window — Why 32K
+
+| Context | KV Cache | Total VRAM | Verdict |
+|---------|----------|------------|---------|
+| 8K | 1.3 GB | ~10.3 GB | Fast, cramped for dev work |
+| 16K | 2.5 GB | ~11.5 GB | Good balance |
+| **32K** | **5.0 GB** | **~14.0 GB** | **Max without KV quantization** |
+| 48K | 7.5 GB | ~16.5 GB | Exceeds VRAM |
+| 64K | 10.0 GB | ~19.0 GB | Impossible without KV quantization |
+
+8K is too cramped for agent routing: a system prompt + current file + 5 turns of debugging easily exceeds it, causing silent truncation where the model "forgets" code it was just looking at.
+
+---
+
+## Speculative Decoding
+
+| Method | Flag | Requires | Status |
+|--------|------|----------|--------|
+| `draft-mtp` | `--spec-type draft-mtp` | MTP head baked into GGUF | Not available — no current GGUF includes MTP layers |
+| `ngram-mod` | `--spec-type ngram-mod` | Nothing — pattern matching | **Currently running** |
+
+Both `gpt-oss-20b` and `Qwen3-14B` exit immediately with `--spec-type draft-mtp` — GGUF exports don't include MTP layers even when the base model was trained with them. `ngram-mod` is the reliable fallback: works on any GGUF, good gains on repetitive code output.
+
+When attempting `--spec-type draft-mtp` on any current GGUF:
+```
+W llama_init_from_model: context type MTP requested but model doesn't contain MTP layers
+E srv    load_model: failed to create MTP context
+```
+
+When MTP GGUFs appear, switch to: `--spec-type draft-mtp,ngram-mod --spec-draft-n-max 3`
+
+---
+
 ## Health Check
 
 ```bash

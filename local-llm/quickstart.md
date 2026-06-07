@@ -122,6 +122,48 @@ Another server is running. Run `stop-server.bat` then try again.
 
 ---
 
+## Running as a Windows Scheduled Task
+
+Survives terminal closure and auto-starts at login. Task name: `llama-server`.
+
+**Register (run once in PowerShell as Admin):**
+
+```powershell
+$exe   = 'C:\Users\Username\AppData\Local\Microsoft\WinGet\Packages\ggml.llamacpp_Microsoft.Winget.Source_8wekyb3d8bbwe\llama-server.exe'
+$flags = '-hf Qwen/Qwen3-14B-GGUF:Q4_K_M --jinja -c 32768 --no-mmap -ngl 99 -np 1 --spec-type ngram-mod --host 0.0.0.0 --port 8033'
+$log   = 'C:\Users\Username\llama-server.log'
+
+$action    = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument "/c `"$exe`" $flags > `"$log`" 2>&1"
+$trigger   = New-ScheduledTaskTrigger -AtLogon -User 'Username'
+$settings  = New-ScheduledTaskSettingsSet -ExecutionTimeLimit 0 -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 2) -StartWhenAvailable
+$principal = New-ScheduledTaskPrincipal -UserId 'Username' -LogonType Interactive -RunLevel Highest
+Register-ScheduledTask -TaskName 'llama-server' -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force
+```
+
+**Management:**
+
+```powershell
+Start-ScheduledTask  -TaskName 'llama-server'
+Stop-ScheduledTask   -TaskName 'llama-server'
+Stop-Process -Name 'llama-server' -Force -ErrorAction SilentlyContinue
+Get-ScheduledTask    -TaskName 'llama-server' | Select-Object State
+Get-Content C:\Users\Username\llama-server.log -Wait -Tail 20
+```
+
+**Changing the model:**
+
+```powershell
+Stop-ScheduledTask -TaskName 'llama-server'
+Stop-Process -Name 'llama-server' -Force -ErrorAction SilentlyContinue
+
+$flags  = '-hf NEW_REPO/MODEL:QUANT --jinja -c 32768 --no-mmap -ngl 99 -np 1 --spec-type ngram-mod --host 0.0.0.0 --port 8033'
+$action = New-ScheduledTaskAction -Execute 'cmd.exe' -Argument "/c `"$exe`" $flags > `"$log`" 2>&1"
+Set-ScheduledTask -TaskName 'llama-server' -Action $action
+Start-ScheduledTask -TaskName 'llama-server'
+```
+
+---
+
 ## API access (for scripts and agents)
 
 | What | Value |
