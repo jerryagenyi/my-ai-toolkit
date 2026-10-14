@@ -34,8 +34,9 @@ Configs already scripted in this folder but not yet benchmarked with recorded nu
 
 Priorities when hands-on time appears — link the source capture when one exists:
 
-- Micro-turn duplex loop per Codacus recipe — needs CUDA (see `sources/videos/2026-10-14-codacus-microturn-full-duplex-voice-ai.md`); blocked on this rig, floor target unlocks it
+- Micro-turn duplex loop per Codacus recipe — needs CUDA (see `sources/videos/2026-10-14-codacus-microturn-full-duplex-voice-ai.md`); **runnable now on Kaggle/RunPod** ([cloud-gpu-options.md](cloud-gpu-options.md)), no hardware purchase required
 - Whistle STT vs whisper base (claimed better) — ls2-relevant, CPU-runnable today
-- KittenTTS 2 / Phonon-2 — small, try today
+- KittenTTS 2 / Phonon-2 — small, try today (local CPU or Kaggle)
 - KV-cache quant sweep (`q8_0` vs `q4_0`) on the 35B — max context before spill?
 - `--n-cpu-moe` sweep on the 35B — t/s vs VRAM split curve for this exact card
+- ComfyUI / Flux-class image-gen trial — RunPod one-click template, first cloud-GPU session candidate

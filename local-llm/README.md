@@ -82,7 +82,7 @@ Techniques 1–2 are MoE-specific. For a normal dense model (e.g. Qwen3-14B, Gem
 
 **AMD on Windows = Vulkan.** No ROCm, no Docker needed. The `amdhip64_6.dll` in System32 is an AMD driver component — it does not mean ROCm is installed. llama.cpp's WinGet build has Vulkan support built in.
 
-**Planning upgrades?** See [hardware-targets.md](hardware-targets.md) — the floor/ideal target specs ladder and what each VRAM tier unlocks. Running experiments? Log results in [experiments.md](experiments.md).
+**Planning upgrades?** See [hardware-targets.md](hardware-targets.md) — the floor/ideal target specs ladder and what each VRAM tier unlocks. **Need CUDA this rig doesn't have?** Rent it — [cloud-gpu-options.md](cloud-gpu-options.md). Running experiments? Log results in [experiments.md](experiments.md).
 
 ### Software needed
 - **llama.cpp** — `winget install ggml.llamacpp`

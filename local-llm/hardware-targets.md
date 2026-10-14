@@ -27,7 +27,8 @@ CTranslate2's GPU path is CUDA-only.
 
 **What it can't do** — the actual gap: LoRA/QLoRA training (Codacus's micro-turn recipe
 needs CUDA), local image/video generation (Flux/ComfyUI class), 32B+ dense models
-comfortably, large model + large context simultaneously.
+comfortably, large model + large context simultaneously. Most of the CUDA-blocked items can
+be **rented instead of bought** — see [cloud-gpu-options.md](cloud-gpu-options.md).
 
 ---
 
@@ -100,6 +101,7 @@ project demands it, not before.
 
 ## Upgrade order (when it happens)
 
+0. **First, rent:** before any purchase, check [cloud-gpu-options.md](cloud-gpu-options.md) — Kaggle's free GPU quota alone covers occasional training runs; buying makes sense only for daily-use convenience, 24/7 serving, or privacy needs
 1. GPU: used 3090 24 GB
 2. PSU: quality 850–1000 W (same time as the GPU)
 3. RAM: 64 → 128 GB (doubles the MoE runway; also helps 70B offload experiments)

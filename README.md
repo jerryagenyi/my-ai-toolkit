@@ -2,6 +2,8 @@
 
 > A personal engineering operating system — curated tools, stacks, conventions, and distilled engineering intelligence for AI-assisted development.
 
+**Start at [INDEX.md](INDEX.md)** — the content map of everything curated here plus the standing "front burner" checklist (local AI, cloud GPUs, experiments, upgrade gate).
+
 ## What This Is
 
 A two-layer system for building software with AI:
