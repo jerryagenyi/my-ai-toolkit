@@ -1,20 +1,29 @@
 {
-  "$schema": "https://claude.ai/manifest.json",
-  "description": "Example hooks configuration for auto-reflection",
+  "description": "Example hooks configuration — copy the relevant blocks into your project's .claude/settings.json under \"hooks\". This file previously used an outdated schema (user-prompt-submit-hook/stop-hook as flat command+args objects) that Claude Code never actually read — fixed 2026-10-20 after discovering it live in a real project. Current schema: event name -> array of {hooks: [{type: \"command\", command: \"...\"}]}.",
   "hooks": {
-    "user-prompt-submit-hook": {
-      "command": "bash",
-      "args": [
-        "-c",
-        "if [ -f 'scripts/reflect-check.sh' ]; then bash scripts/reflect-check.sh; fi"
-      ]
-    },
-    "stop-hook": {
-      "command": "bash",
-      "args": [
-        "-c",
-        "if [ -f 'scripts/reflect-auto.sh' ]; then bash scripts/reflect-auto.sh; fi"
-      ]
-    }
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo Troubleshooting a bug or regression this session? Read docs/tech/incident-log.md (or your project's equivalent) first - it records what has already been tried and why it did or didn't work."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/incident-retro.py"
+          },
+          {
+            "type": "command",
+            "command": "bash scripts/reflect-auto.sh"
+          }
+        ]
+      }
+    ]
   }
 }
