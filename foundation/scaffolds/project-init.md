@@ -116,6 +116,11 @@ For any new project:
    is already in this toolkit; copy it into the new project so devops-practices
    benchmarking is available from story 1 instead of being re-derived or
    forgotten (see `foundation/tools/mcp-servers.md` § devops-practices)
+8b. **Copy the security-audit skill** — `.claude/skills/security-audit/` (vendored
+   Cloudflare security-audit-skill, no login required) is also already in this
+   toolkit; copy it in before anything that handles real user data ships. Run
+   it before/alongside human pilot testing, not after — the value is catching
+   issues before real data is at stake, not confirming things post-launch.
 9. **Run the repo-self-documentation checklist once, early** —
    `playbooks/repo-self-documentation-checklist.md` (AI-044 in devops-practices):
    confirm the new repo actually has a header-docblock convention, a
