@@ -116,6 +116,13 @@ For any new project:
    is already in this toolkit; copy it into the new project so devops-practices
    benchmarking is available from story 1 instead of being re-derived or
    forgotten (see `foundation/tools/mcp-servers.md` § devops-practices)
+9. **Run the repo-self-documentation checklist once, early** —
+   `playbooks/repo-self-documentation-checklist.md` (AI-044 in devops-practices):
+   confirm the new repo actually has a header-docblock convention, a
+   decision-record directory (seed it with the first real architectural
+   choice — `principles/narrate-record-generate.md` points at the template),
+   and a plan for a generated (not hand-maintained) dependency graph before
+   the codebase is big enough for "we'll add that later" to mean "never"
 
 ---
 

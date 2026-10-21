@@ -37,7 +37,12 @@ without repo access.
 0. **Standard gates.** For any non-trivial feature or design review, also
    apply the pressure checklist (7 hostile conditions) and the design-review
    checklist (7 review questions). For significant architectural decisions,
-   produce a decision record using the decision-record template.
+   produce a decision record using the decision-record template. For a new
+   repo, or the first benchmark pass on an existing one, also run the
+   repo-self-documentation checklist (AI-044: header docblocks, a real
+   decision-record directory, a generated — never hand-maintained —
+   dependency graph with at least one CI-enforced rule) once, as a
+   foundational check rather than a per-feature one.
 1. **Determine scope.** Identify what is being benchmarked: the feature's
    surface (endpoints, data writes, external calls, auth flows, frontend
    state) and the stack tags that apply (`backend`, `api`, `db`, `frontend`,
