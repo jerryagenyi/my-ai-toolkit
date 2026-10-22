@@ -22,7 +22,7 @@
 | Where | What |
 |---|---|
 | `foundation/stacks/` | Preferred stacks (Next.js, Laravel+Vue, other) + decision tree |
-| `foundation/tools/` | Approved tools (MCP servers, security scanning) |
+| `foundation/tools/` | Approved tools (MCP servers, security scanning, AI pentesting agents) |
 | `foundation/scaffolds/` | Project-init template/checklist |
 | `foundation/conventions/` | Security, philosophy, coding conventions |
 

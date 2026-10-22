@@ -27,6 +27,8 @@
 | 17 | TypeScript LSP | plugin | high |
 | 18 | Serena | plugin | optional |
 | 19 | Playwright | utility | medium |
+| 20 | Shannon (AI pentest) | security-pentest | high |
+| 21 | Strix (AI pentest) | security-pentest | medium |
 
 ---
 
@@ -348,3 +350,42 @@ await env.exec('echo "Hello" > greeting.txt');
 const result = await env.exec("cat greeting.txt");
 // result.stdout, result.exitCode; filesystem is in-memory by default
 ```
+
+---
+
+## AI Pentesting
+
+> Full detail + decision rationale: `foundation/tools/ai-pentesting.md`. Different category
+> from Trivy/Docker Scout above — these are autonomous agents that ATTACK a live target and
+> prove exploitability with a real PoC, not static scanners. Use pre-launch/pre-pilot, not
+> every CI run (costs real LLM tokens per scan, needs a running target).
+
+### 20. Shannon (AI pentest)
+
+> White-box AI pentester (Keygraph): reads source first, then attacks the running app. "No exploit, no report" — self-hosted, AGPL-3.0, free software (pay only your own LLM tokens).
+
+| Field | Value |
+|-------|-------|
+| Category | security-pentest |
+| Stage | pre-launch, pre-pilot, periodic post-launch |
+| Priority | high |
+| Install | `git clone https://github.com/KeygraphHQ/shannon.git` — see detail file for full setup |
+| Use when | Source access to the target exists (white-box); validating findings a prior static-only audit couldn't execute; pre-launch/pre-pilot exploit proof |
+| Don't use when | True black-box testing with no source access (Strix fits better) |
+| Replaces | Nothing here — complements Code Review (plugin) + Trivy/Docker Scout by adding dynamic exploit proof |
+| Link | https://github.com/KeygraphHQ/shannon |
+
+### 21. Strix (AI pentest)
+
+> Multi-agent black-box pentest orchestrator — bigger community, Docker-native, LLM-agnostic. Apache-2.0, self-hosted CLI free (LLM tokens only); separate hosted SaaS has its own freemium pricing.
+
+| Field | Value |
+|-------|-------|
+| Category | security-pentest |
+| Stage | pre-launch, pre-pilot |
+| Priority | medium |
+| Install | Docker-based CLI — see `github.com/usestrix/strix` for current command |
+| Use when | Pure black-box testing with no source access, or its broader recon/exploit/validate pipeline matters more than Shannon's source-first approach for a given target |
+| Don't use when | Source access exists and white-box testing is possible (Shannon is the better-fitted, cheaper-per-finding default) |
+| Replaces | Nothing here — alternative to Shannon above, not both at once for the same target |
+| Link | https://github.com/usestrix/strix |
