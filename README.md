@@ -54,6 +54,7 @@ my-ai-toolkit/
 │   └── examples/            # Example config files
 │
 ├── scripts/                 # Utility scripts
+├── jev/                     # Jev decision-model layer — vendored skills + implementation doc
 └── .claude/                 # Claude Code skills & config
 ```
 
@@ -76,6 +77,19 @@ my-ai-toolkit/
 | Flutter | Cross-platform mobile |
 
 See [foundation/stacks/README.md](foundation/stacks/README.md) for the full decision tree.
+
+## Jev Decision Layer
+
+[Jev](jev/README.md) (TypeSafe AI) is our cheap, fast **decision model** — it answers
+pick-one/score/yes-no questions with calibrated confidence instead of writing text. The 14
+vendored skills (`jev/skills/`, from [dzhng/jevgrep](https://github.com/dzhng/jevgrep) and
+[kerpopule/hermes-jev-skills](https://github.com/kerpopule/hermes-jev-skills)) are installed
+into Claude Code (`~/.claude/skills/` + lane subagents), ZCode (`~/.zcode/skills/`) and
+Claude Desktop (upload bundle in `jev/claude-desktop/`), with runtimes on PATH (`jg`, `jev`).
+
+**What it's used for:** semantic repo search (`jg`), browser/desktop automation step-picking,
+search-result and memory triage (incl. prompt-injection screening), and model-lane routing.
+Agents: see [AGENT.md](AGENT.md) for the usage rules.
 
 ## Status
 

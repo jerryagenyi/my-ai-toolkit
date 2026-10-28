@@ -2,7 +2,7 @@
 
 > The map of this repo plus the standing checklist of things worth attention. Skim this
 > when returning to the repo; refresh the Front Burner when priorities shift.
-> Last reviewed: 2026-10-14.
+> Last reviewed: 2026-10-28.
 
 ## Content map
 
@@ -26,6 +26,16 @@
 | `foundation/scaffolds/` | Project-init template/checklist |
 | `foundation/conventions/` | Security, philosophy, coding conventions |
 
+### Jev — decision-model layer (installed 2026-10-28)
+
+| Where | What |
+|---|---|
+| `jev/README.md` | Implementation doc: what Jev (TypeSafe decision model) is, what each of the 14 skills is used for, install map (Claude Code / ZCode / Claude Desktop / `jg` + `jev` CLIs), auth, update/uninstall |
+| `jev/skills/` | Canonical vendored copies: 13 `jev-*` skills (hermes-jev-skills `8316358`) + `jevgrep` (jevgrep `9971e04`) |
+| `jev/claude-code/` | Lane subagents (`jev-lane-small/medium/high/escalate`) + managed CLAUDE.md block |
+| `jev/claude-desktop/` | `jev-skills.zip` upload bundle + INSTALL steps |
+| `AGENT.md` | Agent-facing rules: when to use `jg` repo search, browser/computer step-picking, triage, lane routing |
+
 ### Knowledge pipeline (convention)
 
 Radar (perishable: releases, shorts) → **Google Keep**, never the repo. An item is
@@ -35,7 +45,7 @@ project repos (ls2 etc.) keep thin pointers + project-specific takeaways.
 
 ### Root docs
 
-`README.md` (vision/structure) · `IDEAS.md` (strategy) · `QUICKSTART.md` ·
+`README.md` (vision/structure) · `AGENT.md` (agent working notes) · `IDEAS.md` (strategy) · `QUICKSTART.md` ·
 `Role-Modelname-...csv` (model picks) · `docs/` (legacy) · `.claude/` (agent skills)
 
 ### Empty by design (fill when needed)
