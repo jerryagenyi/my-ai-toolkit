@@ -2,7 +2,7 @@
 
 > The map of this repo plus the standing checklist of things worth attention. Skim this
 > when returning to the repo; refresh the Front Burner when priorities shift.
-> Last reviewed: 2026-10-28.
+> Last reviewed: 2026-10-29.
 
 ## Content map
 
@@ -36,6 +36,28 @@
 | `jev/claude-desktop/` | `jev-skills.zip` upload bundle + INSTALL steps |
 | `AGENT.md` | Agent-facing rules: when to use `jg` repo search, browser/computer step-picking, triage, lane routing |
 
+### Playbooks & principles — how-we-do-X recipes
+
+| Where | What |
+|---|---|
+| `playbooks/selfhosted-gha-runners.md` | Per-repo self-hosted GHA runners on ja VPS via Dokploy (canonical infra: `selfhosted-runner` repo) |
+| `playbooks/repo-self-documentation-checklist.md` | Checklist for keeping repos self-documenting |
+| `principles/narrate-record-generate.md` | Narrate → record → generate working principle |
+
+### Harvest list — reusable bits still living in project repos
+
+When a repo produces a hook, skill, script, config pattern, or gate that would work
+across repos or agents, vendor/document it here. Open candidates:
+
+- **credential-guard hook** (blocks agents writing into `~/.secrets`) — global AGENTS.md / agent settings
+- **min-release-age supply-chain config** (`.npmrc` / `bunfig.toml` patterns) — global AGENTS.md + project repos → belongs in `foundation/conventions/security.md`
+- **design-token linter** — LANStreamer CI check
+- **pressure-checklist gate + enforce-PRs-on-main** — LANStreamer / devops practices
+- **append-only versioning rule** — devops practices schema
+
+Already harvested here: `security-audit` + `benchmark-practices` skills, incident-log
+system (`.claude/`), Jev skills (`jev/skills/`).
+
 ### Knowledge pipeline (convention)
 
 Radar (perishable: releases, shorts) → **Google Keep**, never the repo. An item is
@@ -50,8 +72,7 @@ project repos (ls2 etc.) keep thin pointers + project-specific takeaways.
 
 ### Empty by design (fill when needed)
 
-`principles/` · `issues/` · `playbooks/` (beyond the one above) · `evaluators/` · `mcp/` ·
-`schemas/` · `sources/{articles,notes,threads}`
+`evaluators/` · `mcp/` · `schemas/` · `sources/{articles,notes,threads}`
 
 ---
 
@@ -60,6 +81,7 @@ project repos (ls2 etc.) keep thin pointers + project-specific takeaways.
 - [ ] **Benchmark the current rig** — fill the backfill table in `local-llm/experiments.md` (t/s for the 3 scripted models; `--n-cpu-moe` sweep on the 35B; KV-cache `q8_0` vs `q4_0` max-context)
 - [ ] **First cloud-GPU session** — Kaggle notebook (free): Whistle STT vs whisper-base, or KittenTTS 2 / Phonon-2; RunPod if a ComfyUI/Flux trial
 - [ ] **Micro-turn LoRA attempt** — Codacus recipe fits Kaggle's weekly quota; script lives in the capture at `sources/videos/2026-10-14-codacus-microturn-full-duplex-voice-ai.md`
+- [ ] **Harvest the reuse list** — credential-guard hook + min-release-age configs first (see Harvest list above)
 - [ ] **Keep watching** Codacus + theAIsearch — radar in Keep; promote via the pipeline above
 - [ ] **Hardware gate** — no GPU purchase until a project demands *daily* CUDA or 24/7 big-model serving; rent first (`cloud-gpu-options.md`)
 
