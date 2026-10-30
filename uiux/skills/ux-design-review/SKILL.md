@@ -1,5 +1,5 @@
 ---
-name: ui-design-review
+name: ux-design-review
 description: Comprehensive visual design and aesthetics evaluation. Analyzes typography, color, spacing, hierarchy, consistency, branding, and current product-category conventions for polished, professional interfaces.
 ---
 

@@ -12,13 +12,13 @@ references/, they link relatively — never copy SKILL.md alone):
 
 | Skill | Lens |
 |---|---|
-| `nielsen-heuristics-audit` | 10 usability heuristics — the default sweep |
-| `don-norman-principles-audit` | 7 HCD principles (discoverability, affordances, feedback…) |
-| `cognitive-walkthrough` | task-level novice simulation — deep dive on one flow |
-| `information-architecture-audit` | organization / labeling / navigation / search |
-| `ui-design-review` | visual craft: type, color, spacing, hierarchy |
+| `ux-nielsen-heuristics` | 10 usability heuristics — the default sweep |
+| `ux-don-norman-principles` | 7 HCD principles (discoverability, affordances, feedback…) |
+| `ux-cognitive-walkthrough` | task-level novice simulation — deep dive on one flow |
+| `ux-information-architecture` | organization / labeling / navigation / search |
+| `ux-design-review` | visual craft: type, color, spacing, hierarchy |
 | `ux-audit-rethink` | IxDF holistic 360° + redesign proposals — entry point |
-| `wcag-accessibility-audit` | AA/AAA compliance (pairs with impeccable detector) |
+| `ux-wcag-accessibility` | AA/AAA compliance (pairs with impeccable detector) |
 
 The 7 cross-reference each other as complementary lenses (heuristics vs
 task-simulation vs structure vs visual vs holistic). The repo's other 7

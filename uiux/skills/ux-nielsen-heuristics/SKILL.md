@@ -1,5 +1,5 @@
 ---
-name: nielsen-heuristics-audit
+name: ux-nielsen-heuristics
 description: Evaluate UX/UI using Jakob Nielsen's 10 usability heuristics. Comprehensive audit of visibility, control, consistency, error prevention, recognition, flexibility, aesthetics, error recovery, and documentation.
 ---
 

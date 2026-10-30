@@ -1,5 +1,5 @@
 ---
-name: cognitive-walkthrough
+name: ux-cognitive-walkthrough
 description: Deep-dive usability evaluation of specific user tasks. Simulates novice user cognition step-by-step to identify learnability issues, unclear actions, and points of confusion.
 ---
 

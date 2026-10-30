@@ -1,5 +1,5 @@
 ---
-name: wcag-accessibility-audit
+name: ux-wcag-accessibility
 description: Comprehensive web accessibility audit using WCAG 2.1/2.2 guidelines. Evaluate compliance across 4 POUR principles (Perceivable, Operable, Understandable, Robust) with A, AA, AAA conformance levels.
 ---
 
