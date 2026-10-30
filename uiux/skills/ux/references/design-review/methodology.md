@@ -1,7 +1,5 @@
----
-name: ux-design-review
-description: Comprehensive visual design and aesthetics evaluation. Analyzes typography, color, spacing, hierarchy, consistency, branding, and current product-category conventions for polished, professional interfaces.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-design-review` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # UI Design Review
 

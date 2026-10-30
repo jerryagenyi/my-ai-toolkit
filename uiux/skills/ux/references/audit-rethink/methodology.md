@@ -1,7 +1,5 @@
----
-name: ux-audit-rethink
-description: Comprehensive UX audit using IxDF's 7 factors, 5 usability characteristics, and 5 interaction dimensions. Holistic evaluation with redesign proposals based on user-centered design principles.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-audit-rethink` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # UX Audit and Rethink
 

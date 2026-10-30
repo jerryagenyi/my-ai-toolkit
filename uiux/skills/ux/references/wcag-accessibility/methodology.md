@@ -1,7 +1,5 @@
----
-name: ux-wcag-accessibility
-description: Comprehensive web accessibility audit using WCAG 2.1/2.2 guidelines. Evaluate compliance across 4 POUR principles (Perceivable, Operable, Understandable, Robust) with A, AA, AAA conformance levels.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-wcag-accessibility` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # WCAG Accessibility Audit
 

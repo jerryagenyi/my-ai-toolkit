@@ -2,28 +2,46 @@
 
 Seven audit lenses adopted as THE ui/ux audit bundle, plus one
 reference-only doc. Joint decision 2026-10-30 by ZCode + Claude Code
-(Jerry-approved process: adopt one repo or curate a bundle).
+(Jerry-approved process: adopt one repo or curate a bundle). **Same day,
+evening: the seven skills were consolidated into ONE `ux` skill**
+(router + seven absorbed modes) for at-a-glance discovery and cheap
+single-lens invocations — see below.
 
-## Canonical copies — `skills/`
+## Canonical copy — `skills/ux/`
 
-From **mastepanoski/claude-skills @ ac30238 (MIT — see
-`LICENSE-mastepanoski`)**, copied whole (each folder = SKILL.md +
-references/, they link relatively — never copy SKILL.md alone):
+**Source: mastepanoski/claude-skills @ ac30238 (MIT — see
+`LICENSE-mastepanoski`)**. The module is one folder:
 
-| Skill | Lens |
+```
+ux/
+  SKILL.md                ← router: triage table, composition presets,
+                             shared evidence protocol, sources
+  references/
+    audit-rethink/          methodology.md + its references/
+    nielsen-heuristics/     (each mode self-contained — internal links
+    don-norman-principles/    resolve relative to its methodology.md)
+    cognitive-walkthrough/
+    information-architecture/
+    wcag-accessibility/
+    design-review/
+```
+
+| Mode (under `references/`) | Lens |
 |---|---|
-| `ux-nielsen-heuristics` | 10 usability heuristics — the default sweep |
-| `ux-don-norman-principles` | 7 HCD principles (discoverability, affordances, feedback…) |
-| `ux-cognitive-walkthrough` | task-level novice simulation — deep dive on one flow |
-| `ux-information-architecture` | organization / labeling / navigation / search |
-| `ux-design-review` | visual craft: type, color, spacing, hierarchy |
-| `ux-audit-rethink` | IxDF holistic 360° + redesign proposals — entry point |
-| `ux-wcag-accessibility` | AA/AAA compliance (pairs with impeccable detector) |
+| `nielsen-heuristics` | 10 usability heuristics — the default sweep |
+| `don-norman-principles` | 7 HCD principles (discoverability, affordances, feedback…) |
+| `cognitive-walkthrough` | task-level novice simulation — deep dive on one flow |
+| `information-architecture` | organization / labeling / navigation / search |
+| `design-review` | visual craft: type, color, spacing, hierarchy |
+| `audit-rethink` | IxDF holistic 360° + redesign proposals — the broadest single lens |
+| `wcag-accessibility` | AA/AAA compliance (pairs with impeccable detector) |
 
-The 7 cross-reference each other as complementary lenses (heuristics vs
-task-simulation vs structure vs visual vs holistic). The repo's other 7
-skills (gdpr/iso/owasp/nist/ai-assessment) are AI-governance audits,
-out of scope for this bundle.
+Rules: methodology content is verbatim upstream (source commit pinned
+above) with a provenance header per file; the router, triage table, and
+composition presets are local additions. Copy the WHOLE `ux/` folder —
+modes link relatively. The repo's other 7 skills
+(gdpr/iso/owasp/nist/ai-assessment) are AI-governance audits, out of
+scope for this bundle.
 
 ## References — `references/`
 
@@ -42,13 +60,12 @@ out of scope for this bundle.
   website-building factory (SEO, Figma bridges, launch orchestration);
   different product surface; overlaps impeccable + bmad.
 
-## Install map (copy folders whole)
+## Install map (copy the `ux/` folder whole)
 
-- Claude Code: `~/.claude/skills/` ✅ 2026-10-30
-- ZCode (cross-agent share): `~/.agents/skills/` ✅ 2026-10-30
-- openclaude: `~/.openclaude/skills/` ✅ 2026-10-30 (project-level runs
-  also pick up repo `.claude/skills` via the `.openclaude/skills`
-  junction convention)
+- ZCode (cross-agent share) + Claude Code: `~/.agents/skills/ux/` ✅
+  2026-10-30 (the seven originals were removed after absorption — the
+  module replaces them)
+- openclaude: `~/.openclaude/skills/ux/` ✅ 2026-10-30 (same)
 
 First real use: ChurchAfrica UI/UX audit 2026-10-30
 (`docs/design/ui-ux-audit-2026-10-30.md`).

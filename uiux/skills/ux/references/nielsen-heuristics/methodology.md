@@ -1,7 +1,5 @@
----
-name: ux-nielsen-heuristics
-description: Evaluate UX/UI using Jakob Nielsen's 10 usability heuristics. Comprehensive audit of visibility, control, consistency, error prevention, recognition, flexibility, aesthetics, error recovery, and documentation.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-nielsen-heuristics` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # Nielsen Heuristics UX Audit
 

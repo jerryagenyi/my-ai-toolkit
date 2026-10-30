@@ -1,7 +1,5 @@
----
-name: ux-cognitive-walkthrough
-description: Deep-dive usability evaluation of specific user tasks. Simulates novice user cognition step-by-step to identify learnability issues, unclear actions, and points of confusion.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-cognitive-walkthrough` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # Cognitive Walkthrough
 

@@ -1,7 +1,5 @@
----
-name: ux-don-norman-principles
-description: Evaluate UX/UI using Don Norman's 7 fundamental design principles from The Design of Everyday Things. Audit discoverability, affordances, signifiers, feedback, mapping, constraints and conceptual models.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-don-norman-principles` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # Don Norman Principles UX Audit
 

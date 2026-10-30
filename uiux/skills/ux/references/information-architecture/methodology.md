@@ -1,7 +1,5 @@
----
-name: ux-information-architecture
-description: Audit or design the information architecture of a site/app — organization, labeling, navigation, search, content inventory, sitemaps, card sorting and tree testing, with prioritized findings.
----
+> **Source:** https://github.com/mastepanoski/claude-skills — originally the `ux-information-architecture` skill; absorbed into the `ux` module 2026-10-30 (rename round + bundling). Content otherwise verbatim.
+
 
 # Information Architecture Audit
 
