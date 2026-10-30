@@ -26,6 +26,13 @@
 | `foundation/scaffolds/` | Project-init template/checklist |
 | `foundation/conventions/` | Security, philosophy, coding conventions |
 
+### UI/UX audit skill suite (installed 2026-10-30)
+
+| Where | What |
+|---|---|
+| `uiux/README.md` | Implementation doc: the 7-skill mastepanoski audit bundle (Nielsen / Don Norman / cognitive walkthrough / IA / UI review / UX rethink / WCAG) + rejected-repo rationale (uxuiprinciples unlicensed+paywalled, sergek out-of-scope, arvindand reference-only — its SKILL.md carries a live hooks.Stop block, stripped in the vendored copy); install map (Claude Code / ZCode `~/.agents` / openclaude), source pin `ac30238` |
+| `uiux/skills/` | Canonical vendored copies: the 7 audit skills (mastepanoski/claude-skills @ `ac30238`, MIT) |
+
 ### Jev — decision-model layer (installed 2026-10-28)
 
 | Where | What |
@@ -54,6 +61,8 @@ across repos or agents, vendor/document it here. Open candidates:
 - **design-token linter** — LANStreamer CI check
 - **pressure-checklist gate + enforce-PRs-on-main** — LANStreamer / devops practices
 - **append-only versioning rule** — devops practices schema
+
+2026-10-30: UI/UX audit suite harvested direct from upstream (mastepanoski/claude-skills) — see `uiux/README.md`.
 
 Already harvested here: `security-audit` + `benchmark-practices` skills, incident-log
 system (`.claude/`), Jev skills (`jev/skills/`).
