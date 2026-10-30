@@ -62,10 +62,12 @@ scope for this bundle.
 
 ## Install map (copy the `ux/` folder whole)
 
-- ZCode (cross-agent share) + Claude Code: `~/.agents/skills/ux/` ✅
-  2026-10-30 (the seven originals were removed after absorption — the
-  module replaces them)
-- openclaude: `~/.openclaude/skills/ux/` ✅ 2026-10-30 (same)
+- ZCode (cross-agent share): `~/.agents/skills/ux/` ✅ 2026-10-30
+- Claude Code: `~/.claude/skills/ux/` ✅ 2026-10-30
+- openclaude: `~/.openclaude/skills/ux/` ✅ 2026-10-30
+
+All three locations: the seven originals were removed after absorption —
+the module replaces them.
 
 First real use: ChurchAfrica UI/UX audit 2026-10-30
 (`docs/design/ui-ux-audit-2026-10-30.md`).
